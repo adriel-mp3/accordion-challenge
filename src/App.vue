@@ -1,5 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import IndexPage from "./views/IndexPage.vue";
+</script>
 
 <template>
-  <v-btn>Hello Vuetify</v-btn>
+	<IndexPage />
 </template>
