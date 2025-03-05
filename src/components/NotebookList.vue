@@ -36,7 +36,6 @@ const fetchCategories = (id: number) => store.dispatch("fetchCategories", id);
 					</v-expansion-panel-text>
 				</v-expansion-panel>
 			</v-expansion-panels>
-
 			<EmptyNotebookList v-if="!notebooks.length">Sem cadernos para exibir</EmptyNotebookList>
 		</v-container>
 	</section>
