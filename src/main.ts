@@ -1,6 +1,11 @@
-import "./assets/main.css";
-import { createApp } from "vue";
+// Vue
 import App from "./App.vue";
+import { createApp } from "vue";
+
+// Tailwind
+import "./assets/main.css";
+// Stores
+import store from "@/store/notebookStore";
 
 // Vuetify
 import "vuetify/styles";
@@ -13,5 +18,7 @@ const vuetify = createVuetify({
 	components,
 	directives,
 });
-
-createApp(App).use(vuetify).mount("#app");
+const app = createApp(App);
+app.use(vuetify);
+app.use(store);
+app.mount("#app");
