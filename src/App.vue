@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import IndexPage from "./views/IndexPage.vue";
+import IndexPage from "@/views/IndexPage.vue";
 </script>
 
 <template>
