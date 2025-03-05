@@ -44,7 +44,7 @@ export const categories: { [key: number]: Category[] } = {
 		},
 		{
 			id: 2,
-			title: "Gramática",
+			title: "Etimologia das palavras",
 			summary: {
 				exercisesCount: 40,
 				exercisesTime: "30h",
