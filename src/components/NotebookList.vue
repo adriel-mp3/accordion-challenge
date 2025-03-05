@@ -1,42 +1,31 @@
 <script setup lang="ts">
-import { portugueseNotebooksWithoutCategory } from "@/mocks/notebook";
-import type { Category, Notebook } from "@/types";
-import { ref } from "vue";
-import SummaryDetails from "./SummaryDetails.vue";
+import { useStore } from "vuex";
+import { computed, onMounted, ref } from "vue";
+import SummaryDetails from "@/components/SummaryDetails.vue";
 import TabSummaryHeader from "./TabSummaryHeader.vue";
-import { categories } from "@/mocks/category";
 
-const notebooks = ref<Omit<Notebook, "categories">[]>(
-	portugueseNotebooksWithoutCategory,
-);
-const tab = ref(null);
-const notebookCategories = ref<{ [key: number]: Category[] }>({});
-const loading = ref<{ [key: number]: boolean }>({});
+const tab = ref("lessons");
 
-const getCategoriesByNotebookId = async (id: number) => {
-	try {
-		if (notebookCategories.value[id]) return;
-		loading.value[id] = true;
+const store = useStore();
+const notebooks = computed(() => store.state.notebooks);
 
-		await new Promise((resolve) => setTimeout(resolve, 1500));
+onMounted(() => {
+	store.dispatch("fetchNotebooks");
+});
 
-		notebookCategories.value[id] = categories[id] || [];
-	} catch (e) {
-		console.error("Erro ao carregar categorias:", e);
-	} finally {
-		loading.value[id] = false;
-	}
-};
+const getCategoriesByNotebook = (id: number) => computed(() => store.getters.getCategoriesByNotebook(id));
+const getLoadingState = (id: number) => computed(() => store.getters.getLoadingState(id));
+const fetchCategories = (id: number) => store.dispatch("fetchCategories", id);
 </script>
 
 <template>
 	<section>
 		<VContainer>
-			<v-expansion-panels variant="accordion">
+			<v-expansion-panels variant="accordion" v-if="notebooks.length">
 				<v-expansion-panel
 					v-for="notebook in notebooks"
 					:key="notebook.id"
-					@group:selected="getCategoriesByNotebookId(notebook.id)"
+					@group:selected="fetchCategories(notebook.id)"
 				>
 					<v-expansion-panel-title>
 						<div>
@@ -47,7 +36,7 @@ const getCategoriesByNotebookId = async (id: number) => {
 
 					<v-expansion-panel-text>
 						<div
-							v-if="loading[notebook.id]"
+							v-if="getLoadingState(notebook.id).value"
 							class="flex w-full items-center justify-center gap-4 py-4"
 						>
 							<v-progress-circular indeterminate color="purple" />
@@ -55,10 +44,10 @@ const getCategoriesByNotebookId = async (id: number) => {
 						</div>
 
 						<!-- Renderiza as categorias -->
-						<template v-if="!loading[notebook.id]">
+						<template v-if="!getLoadingState(notebook.id).value">
 							<v-expansion-panels>
 								<v-expansion-panel
-									v-for="category in notebookCategories[notebook.id]"
+									v-for="category in getCategoriesByNotebook(notebook.id).value"
 									:key="category.id"
 								>
 									<v-expansion-panel-title class="!bg-neutral-100">
@@ -207,6 +196,7 @@ const getCategoriesByNotebookId = async (id: number) => {
 					</v-expansion-panel-text>
 				</v-expansion-panel>
 			</v-expansion-panels>
+      <span v-if="!notebooks.length">Sem cadernos para exibir</span>
 		</VContainer>
 	</section>
 </template>
