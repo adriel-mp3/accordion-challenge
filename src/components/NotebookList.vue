@@ -6,7 +6,7 @@ import SummaryDetails from "@/components/SummaryDetails.vue";
 import EmptyNotebookList from "./EmptyNotebookList.vue";
 
 const store = useStore();
-const notebooks = computed(() => store.state.notebooks);
+const notebooks = computed(() => []);
 
 onMounted(() => {
 	store.dispatch("fetchNotebooks");
@@ -36,7 +36,7 @@ const fetchCategories = (id: number) => store.dispatch("fetchCategories", id);
 					</v-expansion-panel-text>
 				</v-expansion-panel>
 			</v-expansion-panels>
-			<EmptyNotebookList v-if="!notebooks.length">Sem cadernos para exibir</EmptyNotebookList>
+			<EmptyNotebookList v-if="!notebooks.length" />
 		</v-container>
 	</section>
 </template>
