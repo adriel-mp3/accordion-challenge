@@ -26,19 +26,24 @@ export interface Topic {
 	title: string;
 	summary: CategorySummary;
 	lessons: Lesson[];
+  leassonType: string;
 	exercises: Exercise[];
+  exerciseType: string;
 	materials: Material[];
+  materialType: string;
 }
 
 export interface Exercise {
 	id: number;
 	title: string;
+  duration: string;
 	completed: boolean;
 }
 
 export interface Material {
 	id: number;
 	title: string;
+  duration: string;
 	completed: boolean;
 }
 
