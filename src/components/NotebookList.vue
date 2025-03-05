@@ -6,7 +6,7 @@ import SummaryDetails from "@/components/SummaryDetails.vue";
 import EmptyNotebookList from "./EmptyNotebookList.vue";
 
 const store = useStore();
-const notebooks = computed(() => [store.state.notebooks]);
+const notebooks = computed(() => store.state.notebooks);
 
 onMounted(() => {
 	store.dispatch("fetchNotebooks");
